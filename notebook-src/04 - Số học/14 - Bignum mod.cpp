@@ -1,3 +1,4 @@
+// Số dư của số nguyên lớn a (dạng chuỗi) chia cho b (giả thiết b > 0)
 int smallMod(string a, int b)
 {
     ll res = 0;

@@ -1,4 +1,4 @@
-// Cần "Điểm, vector". Bao lồi (Andrew), O(n log n)
+// Bao lồi (Andrew), O(n log n)
 // Trả về các đỉnh theo chiều ngược kim đồng hồ, bắt đầu từ điểm nhỏ nhất
 // (x nhỏ nhất, rồi y nhỏ nhất); không chứa điểm nằm trên cạnh, bỏ điểm trùng
 // Nếu các điểm thẳng hàng: trả về 2 đầu mút; 1 điểm: trả về điểm đó

@@ -1,6 +1,6 @@
-// t.insert(s):      thêm s vào trie
+// t.insert(s):      thêm s vào trie (chỉ gồm 'a'..'z')
 // t.find(s):        kiểm tra s có tồn tại trong trie không
-// t.find_suffix(s): kiểm tra s có là hậu tố của một xâu trong trie
+// t.find_suffix(s): kiểm tra s có là tiền tố của một xâu trong trie không
 const int TRIE_SZ = 26;
 struct TrieNode
 {

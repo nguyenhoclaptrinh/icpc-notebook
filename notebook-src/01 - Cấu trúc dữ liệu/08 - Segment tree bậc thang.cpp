@@ -1,7 +1,7 @@
 // t.update(u, v, f, d): a[u + k] += f + k * d, với k = 0..v-u
 //                       (bậc thang a[u] += 1, a[u+1] += 2, ...: f = d = 1;
 //                        cộng thường val: f = val, d = 0)
-// t.query(u, v):        tổng đoạn [u..v] (giá trị một ô: query(i, i))
+// t.query(u, v):        tổng đoạn [u..v] (giá trị một ô: query(i, i)), O(log n)
 // Lazy (a, b): cộng a + b * i vào mỗi phần tử i của đoạn
 struct StairSegTree
 {

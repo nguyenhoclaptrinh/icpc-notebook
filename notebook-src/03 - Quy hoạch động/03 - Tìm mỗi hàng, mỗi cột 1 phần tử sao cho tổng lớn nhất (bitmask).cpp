@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
 using namespace std;
+// PHÂN CÔNG — chọn k ô sao cho mỗi hàng, mỗi cột tối đa 1 ô, tổng lớn nhất
+// Dấu hiệu: "mỗi hàng/cột chọn 1", "tổng lớn nhất". O(m * n * 2^n), cần n <= 20.
+// Cách gọi: nhập n, m, k và ma trận a[n][m]; Solve() -> in k và tổng lớn nhất.
 const int oo = 2e9;
 const int N = 2e1 + 5;
 
@@ -39,7 +41,7 @@ void Solve()
         }
     }
 
-    int res = 0;
+    int res = -oo; // khởi tạo -vô cực để đúng cả khi mọi số âm
     for (int s = 0; s < (1 << n); s++)
         if (__builtin_popcount(s) == k)
             res = max(res, dp[s][m - 1]);

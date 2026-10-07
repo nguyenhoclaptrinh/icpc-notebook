@@ -1,3 +1,5 @@
+// HASH PHÂN SỐ — mã hóa phân số/hướng (dx, dy) đã rút gọn để so sánh O(1)
+// Cách gọi: hashFrac(tử, mẫu); hashSlope(A, B) cho hướng đường thẳng AB.
 ull hashFrac(ll num, ll den)
 {
     ll g = __gcd(llabs(num), llabs(den));

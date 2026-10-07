@@ -1,4 +1,4 @@
-// Cần "Điểm, vector". Đa giác đơn (không tự cắt), đỉnh p[0..n-1] theo thứ tự
+// Đa giác đơn (không tự cắt), đỉnh p[0..n-1] theo thứ tự
 // polyArea2(p):      2 lần diện tích có dấu (> 0 nếu ngược chiều kim đồng hồ)
 //                    (tránh chia đôi để giữ số nguyên; coi chừng tràn ll
 //                    nếu toạ độ ~ 1e9)

@@ -1,5 +1,5 @@
 // t.queryKthPos(u, v, k):
-// tìm vị trí số nhỏ thứ Kth trong đoạn [L, R]
+// tìm vị trí số nhỏ thứ Kth trong đoạn [L, R], O(log^2 n)
 struct KthSegTree
 {
     int n;

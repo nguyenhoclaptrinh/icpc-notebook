@@ -1,4 +1,4 @@
-// Đúng với mọi n < 2^64, không phụ thuộc Pow
+// MILLER-RABIN — kiểm tra SNT đúng với mọi n < 2^64: miller(n)
 pair<ull, ull> factor(ull n) // phân tích n = 2^s * d
 {
     ull s = 0;

@@ -1,8 +1,5 @@
-// tìm các pi[i] là giá trị K <= i lớn I sao cho:
-// - s[0, K-1] == s[i - K + 1, i]
-// Lưu ý: pi[0] = 0
-// đặt N = s.size()
-// O(N)
+// KMP — tìm mọi vị trí T xuất hiện trong S, O(N+M)
+// Cách gọi: string_matching(S, T) -> vị trí 0-index.
 vector<int> prefix_function(string s)
 {
     int n = s.size();
@@ -39,7 +36,9 @@ vector<int> string_matching(string s, string t)
         // p[0, m - 1] == p[i - pi[i] + 1, i] == T
         // -> tồn tại xâu con trong S bằng T
         if (pi[i] == m)
-            res.push_back(i - 2*m + 1);
+            // Vị trí bắt đầu trong p: i - m + 1
+            // Vị trí tương ứng trong s: (i - m + 1) - (m + 1) = i - 2*m
+            res.push_back(i - 2*m);
     }
 
     return res;

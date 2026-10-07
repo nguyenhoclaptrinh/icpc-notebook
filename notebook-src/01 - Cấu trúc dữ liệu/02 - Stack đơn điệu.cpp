@@ -1,6 +1,7 @@
 // Tất cả đều O(n), a 1-indexed: a[1..n]. Đổi dấu so sánh để tìm nhỏ hơn
-// nextGreater(a)[i]: j > i nhỏ nhất mà a[j] > a[i] (n + 1 nếu không có)
+// nextGreater(a)[i]: j > i nhỏ nhất mà a[j] >= a[i] (n + 1 nếu không có)
 // prevGreater(a)[i]: j < i lớn nhất mà a[j] > a[i] (0 nếu không có)
+//   (một bên >=, một bên > để khi kết hợp không sót/trùng phần tử bằng nhau)
 // largestRect(a):    HCN lớn nhất trong histogram có chiều cao a[i]
 //                    (a[i] >= 0, mỗi cột rộng 1)
 vector<int> nextGreater(vector<int> &a)

@@ -7,6 +7,8 @@
 // Độ phức tạp: O(E sqrt V). Nhanh hơn Kuhn (DFS đơn) rất nhiều.
 // Lưu ý: đồ thị PHẢI lưỡng phân. Vertex cover cực tiểu (Kőnig):
 //   |cover| = |matching|; min path cover trên DAG = n - |matching|.
+//   Dựng DAG thành 2 phía (mỗi đỉnh v tách thành v_trái, v_cạnh): mỗi cạnh
+//   u->v thành cạnh (u_trái, v_phải), rồi maxMatching() và trừ đi.
 struct HopcroftKarp {
     int nL, nR;
     vector<vector<int>> adj;

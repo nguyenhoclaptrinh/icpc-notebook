@@ -30,7 +30,8 @@ function walk (_path, depth) {
     if (stat.isDirectory()) {
       ans += '\n' + section[depth] + file.replace(/^\d+ - /, '') + '}\n' + walk(f, depth + 1)
     } else if (path.extname(f) in extensions) {
-      ans += '\n' + section[depth] + file.split('.')[0].replace(/^\d+ - /, '') + '}\n'
+      const title = path.basename(f, path.extname(f)).replace(/^\d+ - /, '')
+      ans += '\n' + section[depth] + title + '}\n'
       if (path.extname(f) !== '.tex') {
         const highlighted = highlightCpp(fs.readFileSync(f, 'utf8'))
         ans += '{\\ttfamily\\small\n\\begin{alltt}\n' + highlighted + '\\end{alltt}\n}\n'
@@ -52,7 +53,8 @@ function genpdf (ans, texPath, tmpobj, iter) {
     texPath
   ], {
     cwd: tmpobj.name,
-    env: process.env
+    env: process.env,
+    stdio: 'inherit' // xả log lualatex realtime ra terminal
   })
 
   tex.on('error', function (err) {
@@ -63,7 +65,15 @@ function genpdf (ans, texPath, tmpobj, iter) {
     const outputFile = texPath.split('.')[0] + '.pdf'
     fs.access(outputFile, function (err) {
       if (err) {
-        return console.error('Not generated ' + code + ' : ' + signal)
+        // In đuôi log để biết lỗi LaTeX (thay vì chỉ báo "Not generated")
+        try {
+          const log = fs.readFileSync(texPath.split('.')[0] + '.log', 'utf8')
+            .split('\n').filter(l => l.startsWith('!')).slice(0, 10).join('\n')
+          console.error(log || ('Not generated ' + code + ' : ' + signal))
+        } catch (e) {
+          console.error('Not generated ' + code + ' : ' + signal)
+        }
+        return
       }
       if (iter === 0) {
         const s = fs.createReadStream(outputFile)
@@ -105,6 +115,12 @@ function templateParameter (parameter) {
   return `\${${parameter}}`
 }
 
+// String.replace chỉ thay thế chỗ đầu tiên; template có ${paper} 2 lần
+// nên phải thay toàn cục, nếu không dòng \geometry giữ nguyên chữ ${paper}
+function replaceAll (template, parameter, value) {
+  return template.split(templateParameter(parameter)).join(value)
+}
+
 module.exports = function (_path, options) {
   options.output = options.output || './notebook.pdf'
   options.author = options.author || ''
@@ -119,13 +135,12 @@ module.exports = function (_path, options) {
   }
 
   let template = fs.readFileSync(path.join(__dirname, 'template_header.tex')).toString()
-  template = template
-    .replace(templateParameter('author'), options.author)
-    .replace(templateParameter('initials'), options.initials)
-    .replace(templateParameter('fontSize'), options.size)
-    .replace(templateParameter('columns'), options.columns)
-    .replace(templateParameter('paper'), options.paper)
-    .replace(templateParameter('image'), options.image)
+  template = replaceAll(template, 'author', options.author)
+  template = replaceAll(template, 'initials', options.initials)
+  template = replaceAll(template, 'fontSize', options.size)
+  template = replaceAll(template, 'columns', options.columns)
+  template = replaceAll(template, 'paper', options.paper)
+  template = replaceAll(template, 'image', options.image)
 
   template += walk(_path, 0)
   template += '\\end{multicols*}\n'

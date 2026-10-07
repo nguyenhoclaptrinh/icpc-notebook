@@ -1,9 +1,6 @@
-#include <iostream>
-#include <vector>
-#define taskname "BIGNUM"
-
-using namespace std;
-
+// SỐ NGUYÊN LỚN — cộng/trừ/nhân số nguyên lớn không âm (dạng chuỗi)
+// Cách gọi: Inp() nhập a, b; Solve() in tổng, hiệu, tích. O(n*m) khi nhân.
+// Lưu ý: chỉ dùng khi đề bắt buộc (ICPC hiếm khi cần); số vừa thì dùng int64.
 struct bigint{char si = '+'; string val;};
 
 bigint a, b;
@@ -48,20 +45,27 @@ bigint Plus(bigint x, bigint y)
 bigint dif(bigint x, bigint y)
 {
     if (x.si == '+' && y.si == '-') return Plus(x, y);
-    if (x.si == '-' && y.si == '-') return dif(y, x);
     if (x.si == '-' && y.si == '+')
     {
-        bigint res = Plus(x, y); res.si = '-';
-        return res;
+        x.si = '+'; // (-|x|) + |y| = |y| - |x|
+        return dif(y, x);
+    }
+    if (x.si == '-' && y.si == '-') // cả 2 âm: (-x) - (-y) = y - x
+    {
+        bigint a = x, b = y;
+        a.si = b.si = '+';
+        return dif(b, a);
     }
 
+    if (x.val.size() != y.val.size()) equalSize(x, y); // đệm 0 để trừ từng chữ số
     bool check = false;
-    if (x.val < y.val) swap(x, y), check = true;
+    if (x.val.size() < y.val.size() || (x.val.size() == y.val.size() && x.val < y.val))
+        swap(x, y), check = true; // so sánh theo độ dài trước, rồi mới so sánh chuỗi
     bigint res; res.val = "";
     int tmp, carry = 0;
     for (int i = x.val.size() - 1; i >= 0; i--)
     {
-        tmp = x.val[i] - y.val[i] - carry;
+        tmp = (x.val[i] - '0') - (y.val[i] - '0') - carry;
         if (tmp < 0)
         {
             tmp += 10;
@@ -69,7 +73,7 @@ bigint dif(bigint x, bigint y)
         }
         else
             carry = 0;
-        res.val = char(tmp + 48) + res.val;
+        res.val = char(tmp + '0') + res.val;
     }
     if (check) res.si = '-';
     else       res.si = '+';
@@ -92,7 +96,7 @@ bigint BigMultSmall(string x, int y)
 
 bigint mul(bigint x, bigint y)
 {
-    vector<bigint> rem; rem.resize(x.val.size() + y.val.size());
+    vector<bigint> rem; rem.reserve(x.val.size() + y.val.size());
 
     string zero = "";
     bigint tmp; tmp.val = "";

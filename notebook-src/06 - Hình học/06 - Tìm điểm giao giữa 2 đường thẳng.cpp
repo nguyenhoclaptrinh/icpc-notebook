@@ -1,18 +1,10 @@
-point intersect(line l1, line l2)
+// intersect(l1, l2, x, y): giao 2 đường thẳng, trả về false nếu song song/trùng
+//   (x, y là tọa độ giao điểm khi có nghiệm duy nhất)
+bool intersect(line l1, line l2, double &x, double &y)
 {
-    ll a1 = l1.a, b1 = l1.b, c1 = l1.c,
-       a2 = l2.a, b2 = l2.b, c2 = l2.c;
-    ll D  = a1*b2 - a2*b1,
-       Dx = c2*b1 - c1*b2,
-       Dy = a2*c1 - a1*c2;
-
-    if (D == Dx && Dx == Dy && Dy == 0)
-        return {{(ll)  N + 1, 1LL}, {(ll)  N + 1, 1LL}};
-
-    if (D == 0 && (Dx || Dy))
-        return {{(ll) -N - 1, 1LL}, {(ll) -N - 1, 1LL}};
-
-    point M = {{Dx, D}, {Dy, D}};
-
-    return M;
+    ll D = l1.a * l2.b - l2.a * l1.b;
+    if (D == 0) return false; // song song hoặc trùng nhau
+    x = (double)(l1.b * l2.c - l2.b * l1.c) / D;
+    y = (double)(l2.a * l1.c - l1.a * l2.c) / D;
+    return true;
 }

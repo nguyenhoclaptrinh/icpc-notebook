@@ -1,5 +1,6 @@
-#include <bits/stdc++.h>
-
+// TARJAN — đếm thành phần liên thông mạnh (SCC) trên đồ thị CÓ HƯỚNG, O(n + m)
+// Cách gọi: addEdge(u, v) 1-index; Solve() -> in số SCC. Gọi Solve() 1 lần duy nhất
+//   (mảng num/low/deleted dùng chung, không tự reset cho test thứ 2).
 using namespace std;
 const int N = 1e5 + 5;
 

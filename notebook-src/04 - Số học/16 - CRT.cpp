@@ -6,19 +6,12 @@
 // Độ phức tạp: O(n log Amax).
 // Lưu ý: lcm trung gian phải vừa trong 64-bit; tích M*t dùng __int128.
 //   m[i] phải > 0; tự chuẩn hóa r[i] về [0, m[i]) trước khi gọi nếu cần.
-ll egcd(ll a, ll b, ll &x, ll &y) {
-    if (b == 0) { x = 1; y = 0; return a; }
-    ll x1, y1;
-    ll g = egcd(b, a % b, x1, y1);
-    x = y1; y = x1 - y1 * (a / b);
-    return g;
-}
-
 pair<ll, ll> crt(const vector<ll> &r, const vector<ll> &m) {
     __int128 x = r[0], M = m[0];
     for (int i = 1; i < (int)r.size(); i++) {
         ll p, q;
-        ll g = egcd((ll)M, m[i], p, q); // M vừa trong ll theo giả thiết
+        ext_gcd((ll)M, m[i], p, q); // M vừa trong ll theo giả thiết
+        ll g = p * (ll)M + q * m[i]; // p*M + q*m[i] = gcd(M, m[i])
         __int128 diff = (__int128)r[i] - x;
         if (diff % g != 0) return {0, -1}; // vô nghiệm
         __int128 lcm = M / g * m[i];

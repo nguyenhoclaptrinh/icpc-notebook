@@ -4,6 +4,7 @@
 // t.kth(l, r, k):      số nhỏ thứ k trong a[l..r] (1 <= k <= r - l + 1)
 // t.countLE(l, r, x):  số phần tử <= x trong a[l..r]
 //                      (số phần tử > x là (r - l + 1) - countLE(l, r, x))
+// Áp dụng: truy vấn số nhỏ thứ k / đếm ≤ x trên đoạn tĩnh, online.
 // root[i]: gốc của phiên bản i (root[0] = 0 là cây rỗng)
 struct PersistentSegTree
 {

@@ -1,3 +1,6 @@
+// LCIS — dãy con chung TĂNG dài nhất của a[1..n] và b[1..m], O(n*m)
+// Cách gọi: f[1..m] = {0}; Solve() -> in độ dài LCIS tăng chặt.
+// Lưu ý: cần mảng a, b, f và n, m khai báo sẵn; muốn KHÔNG GIẢM: đổi > thành >=.
 void Solve()
 {
     for (int i = 1; i <= n; i++) {

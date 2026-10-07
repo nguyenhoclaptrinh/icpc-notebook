@@ -1,4 +1,3 @@
-// Cần "Điểm, vector"
 // segIntersect(a, b, c, d): đoạn ab và cd có điểm chung không
 //                           (kể cả chạm đầu mút, chồng lên nhau, suy biến)
 // distPointLine(p, a, b):   khoảng cách từ p đến đường thẳng ab (a != b)

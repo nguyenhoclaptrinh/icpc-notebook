@@ -1,5 +1,4 @@
 // Phân tích thừa số nguyên tố số lớn, n < 2^64
-// Cần miller(n) trong "Kiểm tra SNT – Miller Rabin"
 // factorize(n):  các thừa số nguyên tố của n (có lặp, đã sắp xếp)
 //                trung bình O(n^(1/4)) phép nhân modulo
 //                VD: factorize(12) = {2, 2, 3}, factorize(1) = {}
@@ -39,6 +38,7 @@ void split(ull n, vector<ull> &res)
 vector<ull> factorize(ull n)
 {
     vector<ull> res;
+    if (n < 2) return res; // 0, 1 không có thừa số nguyên tố
     // tách các thừa số nhỏ trước cho nhanh (và tránh rho với n chẵn)
     for (ull p = 2; p < 100 && p * p <= n; p++)
         while (n % p == 0) {

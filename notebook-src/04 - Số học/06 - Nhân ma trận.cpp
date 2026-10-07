@@ -1,7 +1,5 @@
-#include <bits/stdc++.h>
-using namespace std;
-using ll = long long;
-// matrix type
+// NHÂN MA TRẬN — lũy thừa ma trận cho truy hồi tuyến tính (F(n) tới 1e18)
+// Cách gọi: Matrix a({{1,1},{1,0}}); a.pow(n); O(k^3 log n). Tràn ll thì lấy mod.
 using type = ll;
 struct Matrix
 {
@@ -47,38 +45,3 @@ struct Matrix
         return ans;
     }
 };
-int main()
-{
-    Matrix a({
-        {1, 2},
-        {3, 4}
-    });
-    Matrix b({
-        {0, 10, 100},
-        {1,  1,  10}
-    });
-    cout << a * b << '\n';
-    // 2 12 120
-    // 4 34 340
-    cout << a.pow(3) << '\n';
-    // 37 54
-    // 81 118
-    b = a;
-    cout << b << '\n';
-    // 1 2
-    // 3 4
-    b = Matrix::identity(3);
-    cout << b << '\n';
-    // 1 0 0
-    // 0 1 0
-    // 0 0 1
-    b = Matrix(2, 3);
-    cout << b << '\n';
-    // 0 0 0
-    // 0 0 0
-    Matrix c(3, 2);
-    cout << c << '\n';
-    // 0 0
-    // 0 0
-    // 0 0
-}

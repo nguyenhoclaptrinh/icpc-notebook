@@ -1,5 +1,5 @@
-// t.update(x, y, w):       thay giá trị tại ô (x, y) thành w
-// t.query(x1, y1, x2, y2): tính max HCN (x1, y1) - (x2, y2)
+// t.update(x, y, w):       thay giá trị tại ô (x, y) thành w, O(log n * log m)
+// t.query(x1, y1, x2, y2): tính max HCN (x1, y1) - (x2, y2), O(log n * log m)
 struct SegTree2D
 {
     int n, m;

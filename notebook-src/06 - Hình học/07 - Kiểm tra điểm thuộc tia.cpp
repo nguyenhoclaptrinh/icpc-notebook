@@ -1,17 +1,10 @@
-// point là phân số
-bool pointInLaser(point M, point A, point B)
+// KIỂM TRA ĐIỂM THUỘC TIA — M có nằm trên tia xuất phát hướng A->B không?
+// Cách gọi: pointInLaser(M, A, B) -> true nếu M nằm trên tia A->B. O(1)
+// Lưu ý: cần thẳng hàng (cross == 0) VÀ cùng hướng (dot >= 0).
+//   Trường hợp A == B: tia chỉ là điểm A -> trả về M == A.
+bool pointInLaser(Pt M, Pt A, Pt B)
 {
-    db Ax = (db) A.x.fi / A.x.se,
-       Ay = (db) A.y.fi / A.y.se,
-       Bx = (db) B.x.fi / B.x.se,
-       By = (db) B.y.fi / B.y.se,
-       Mx = (db) M.x.fi / M.x.se,
-       My = (db) M.y.fi / M.y.se;
-
-    db t1 = Mx - Ax,
-       t2 = Bx - Ax,
-       t3 = My - Ay,
-       t4 = By - Ay;
-
-    return ((db) t1*t2 >= 0.0 && (db) t3*t4 >= 0.0);
+    if (A == B) // tia suy biến: chỉ còn điểm A
+        return M == A;
+    return sgn(cross(A, B, M)) == 0 && sgn(dot(B - A, M - A)) >= 0;
 }

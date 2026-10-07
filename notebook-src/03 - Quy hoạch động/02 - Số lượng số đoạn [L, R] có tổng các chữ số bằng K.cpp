@@ -1,5 +1,5 @@
-ll l, r; int k;
-ll f[20][200][2];
+ll l, r; int k; // đếm số trong [L, R] có tổng chữ số bằng K: cnt(R) - cnt(L-1)
+ll f[20][200][2]; // f[id][sum][tight]: bảng nhớ, reset bằng memset(f, -1) mỗi lần cnt
 ll dp(string &s, int id, int sum, bool isSmaller)
 {
     if (id == s.size())
@@ -25,5 +25,8 @@ ll cnt(ll x) // đếm đoạn [1, X]
 {
     string s = std::to_string(x);
     memset(f, -1, sizeof(f));
-    return dp(s, 0, 0, 0);
+    ll res = dp(s, 0, 0, 0);
+    // dp đếm cả số 0 (tổng chữ số = 0), nên khi K = 0 cần trừ đi 1
+    if (k == 0) res--;
+    return res;
 }

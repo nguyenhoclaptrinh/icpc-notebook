@@ -9,7 +9,7 @@
 // mx[i][j]: max w trên 2^j đỉnh bắt đầu từ i đi lên (không tính up[i][j])
 struct LCA
 {
-    static constexpr int LOG = 20; // 2^LOG > n
+    static constexpr int LOG = 20; // 2^LOG > n (LOG=20 đủ cho n ≤ 1,048,576)
     static constexpr int NEG = INT_MIN;
 
     int n;
