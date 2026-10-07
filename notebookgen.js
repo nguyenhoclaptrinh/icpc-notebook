@@ -4,6 +4,7 @@ const spawn = require('child_process').spawn
 const through2 = require('through2')
 const tmp = require('tmp')
 const os = require('os')
+const { highlightCpp } = require('./highlight')
 
 const section = ['\\section{', '\\subsection{', '\\subsubsection{']
 const extensions = {
@@ -20,18 +21,19 @@ const extensions = {
 function walk (_path, depth) {
   let ans = ''
   depth = Math.min(depth, section.length - 1)
-  fs.readdirSync(_path).forEach(function (file) {
+  fs.readdirSync(_path).sort().forEach(function (file) {
     if (file.startsWith('.')) {
       return // hidden directory
     }
     const f = path.resolve(_path, file)
     const stat = fs.lstatSync(f)
     if (stat.isDirectory()) {
-      ans += '\n' + section[depth] + file + '}\n' + walk(f, depth + 1)
+      ans += '\n' + section[depth] + file.replace(/^\d+ - /, '') + '}\n' + walk(f, depth + 1)
     } else if (path.extname(f) in extensions) {
-      ans += '\n' + section[depth] + file.split('.')[0] + '}\n'
+      ans += '\n' + section[depth] + file.split('.')[0].replace(/^\d+ - /, '') + '}\n'
       if (path.extname(f) !== '.tex') {
-        ans += `\\begin{lstlisting}[language=${extensions[path.extname(f)]}]\n` + fs.readFileSync(f) + '\\end{lstlisting}\n'
+        const highlighted = highlightCpp(fs.readFileSync(f, 'utf8'))
+        ans += '{\\ttfamily\\small\n\\begin{alltt}\n' + highlighted + '\\end{alltt}\n}\n'
       } else {
         ans += fs.readFileSync(f)
       }
@@ -45,7 +47,7 @@ function walk (_path, depth) {
  * According to some tests, in windows it must be generated 3 times.
  * */
 function genpdf (ans, texPath, tmpobj, iter) {
-  const tex = spawn('pdflatex', [
+  const tex = spawn('lualatex', [
     '-interaction=nonstopmode',
     texPath
   ], {
@@ -126,7 +128,7 @@ module.exports = function (_path, options) {
     .replace(templateParameter('image'), options.image)
 
   template += walk(_path, 0)
-  template += '\\end{multicols}\n'
+  template += '\\end{multicols*}\n'
   template += '\\end{document}'
   pdflatex(template).pipe(fs.createWriteStream(options.output))
 }
