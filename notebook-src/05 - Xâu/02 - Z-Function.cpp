@@ -1,8 +1,8 @@
-// Z-FUNCTION — z[i] = tiền tố dài nhất của s khớp với s[i..n-1]
-// Dấu hiệu nhận biết: "tiền tố", "xâu con chung", "số lần xuất hiện".
-// Cách gọi: z = z_function(s); z[0] = 0.
-// Độ phức tạp: O(N) — dùng cửa sổ [l, r] giới hạn số lần so sánh.
-// Lưu ý: z[0] luôn là 0 (không tự so sánh).
+// Z-FUNCTION — tiền tố dài nhất khớp từng hậu tố, O(N)
+// Dấu hiệu: "tiền tố khớp hậu tố", "đếm prefix xuất hiện bao nhiêu lần".
+//   VD: s="aabcaabx" -> z[4]=3 ("aab").
+// Lưu ý: '#' vắng mặt; num_substr O(N^2): N > 2000 dùng SAM.
+// z[0]=0; cửa sổ [l,r] giữ O(N).
 vector<int> z_function(string s)
 {
     int n = s.size();
@@ -16,12 +16,8 @@ vector<int> z_function(string s)
     return z;
 }
 
-// Tìm các vị trí xâu T xuất hiện trong S (bản dùng Z-function)
+// vị trí T xuất hiện trong S (0-index), O(N+M).
 // SUBMIT LINK: https://oj.vnoi.info/problem/substr
-// đặt M = t.size(), N = s.size()
-// tìm các vị trí i trong xâu S
-// mà S[i, i + M - 1] == T
-// O(N + M)
 vector<int> z_matching(string s, string t)
 {
     string p = t + '#' + s;
@@ -30,24 +26,18 @@ vector<int> z_matching(string s, string t)
     vector<int> z = z_function(p);
     vector<int> res;
     for (int i = m + 1; i <= m + n; ++i) {
-        // Tìm thấy KQ:
-        // p[0, m - 1] == p[i, i + z[i] - 1] == T
-        // -> tồn tại xâu con trong S bằng T
+        // z[i]>=m: T bắt đầu tại i, vị trí trong s là i-m-1
         if (z[i] == m)
-            res.push_back(i - m - 1); // vị trí trong s: i - (m + 1)
+            res.push_back(i - m - 1);
     }
     return res;
 }
 
-// Đếm số lượng xâu con liên tiếp phân biệt trong S
-// đặt N = s.size()
-// O(N^2)
+// số xâu con phân biệt, O(N^2).
+// Ý tưởng: thêm từng ký tự, cộng (i+1)-zmax.
 int num_substr(string s)
 {
-    // Ý tưởng: giả sử số lượng xâu phân biệt
-    //          là K, khi ta thêm kí tự c vào
-    //          thì cần đếm thêm số lượng xâu
-    //          khác nhau có hậu tố với chuỗi s + c
+    // cộng số xâu mới có hậu tố là tiền tố đang xét
     int k = 0;
     int n = s.size();
     for (int i = 0; i < n; ++i) {

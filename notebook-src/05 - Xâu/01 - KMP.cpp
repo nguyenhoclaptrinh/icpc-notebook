@@ -1,5 +1,8 @@
-// KMP — tìm mọi vị trí T xuất hiện trong S, O(N+M)
-// Cách gọi: string_matching(S, T) -> vị trí 0-index.
+// KMP — tìm pattern T trong S + biên/chu kỳ, O(N+M)
+// Dấu hiệu: "tìm mọi vị trí xuất hiện", "chu kỳ/border nhỏ nhất".
+//   VD: S="ababa", T="aba" -> {0, 2}.
+// Lưu ý: '#' vắng mặt trong S,T.
+// pi[i] = border dài nhất của tiền tố s[0..i].
 vector<int> prefix_function(string s)
 {
     int n = s.size();
@@ -17,12 +20,8 @@ vector<int> prefix_function(string s)
     return pi;
 }
 
-// Tìm các vị trí xâu T xuất hiện trong S
+// vị trí T xuất hiện trong S (0-index), O(N+M).
 // SUBMIT LINK: https://oj.vnoi.info/problem/substr
-// đặt M = t.size(), N = s.size()
-// tìm các vị trí i trong xâu S
-// mà S[i, i + M - 1] == T
-// O(N + M)
 vector<int> string_matching(string s, string t)
 {
     string p = t + '#' + s;
@@ -32,12 +31,8 @@ vector<int> string_matching(string s, string t)
 
     vector<int> res;
     for (int i = m + 1; i <= m + n; ++i) {
-        // Tìm thấy KQ:
-        // p[0, m - 1] == p[i - pi[i] + 1, i] == T
-        // -> tồn tại xâu con trong S bằng T
+        // pi[i]==m: T kết thúc tại i, vị trí trong S là i-2*m
         if (pi[i] == m)
-            // Vị trí bắt đầu trong p: i - m + 1
-            // Vị trí tương ứng trong s: (i - m + 1) - (m + 1) = i - 2*m
             res.push_back(i - 2*m);
     }
 

@@ -1,18 +1,20 @@
-// Li Chao tree: thêm đường thẳng y = k*x + b, hỏi min tại x. Dạng động
-// (mỗi lần add tạo tối đa 1 node, không cần nén toạ độ), O(log(hi - lo))
-// VD: dp[i] = min_j(m[j] * x[i] + b[j]) khi x[i] KHÔNG đơn điệu
-// (x đơn điệu thì dùng convex hull trick deque cho nhẹ).
-// Muốn max: add(-k, -b) và đổi dấu kết quả query.
-// t.build(lo, hi):  các x hỏi nằm trong [lo, hi]
-// t.add(k, b):      thêm đường y = k*x + b
-// t.query(x):       min tại x (LLONG_MAX nếu chưa có đường nào)
-// Yêu cầu |k * x| + |b| không tràn ll
+// Li Chao động — thêm đường y = k*x + b, hỏi min tại x (không cần nén tọa độ)
+// Dấu hiệu: dp[i] = min_j(m[j]*x[i] + b[j]) mà x[i] KHÔNG đơn điệu.
+//   VD: build(-1e9,1e9); add(2,3); query(10) = 23.
+// Độ phức tạp: O(log(HI-LO)) mỗi op, mỗi add tạo <= 1 node.
+// Lưu ý: chỉ min; miền x nguyên rời rạc.
 struct LiChao
 {
     struct Line
     {
         ll k, b;
-        ll eval(ll x) { return k * x + b; }
+        // k*x+b, clamp về ll (input vừa trong ll).
+        ll eval(ll x) {
+            __int128 v = (__int128)k * x + b;
+            if (v > LLONG_MAX) return LLONG_MAX;
+            if (v < LLONG_MIN) return LLONG_MIN;
+            return (ll)v;
+        }
     };
 
     struct Node
@@ -25,6 +27,7 @@ struct LiChao
     int root;
     vector<Node> t;
 
+    // gọi trước; mọi x query trong [lo,hi].
     void build(ll _lo, ll _hi)
     {
         lo = _lo;
@@ -33,6 +36,7 @@ struct LiChao
         t.assign(1, {{0, 0}, 0, 0}); // node 0: rỗng
     }
 
+    // chèn đường vào node đoạn [l,r].
     int add(int id, ll l, ll r, Line nw)
     {
         if (!id) {
@@ -56,11 +60,13 @@ struct LiChao
         return id;
     }
 
+    // thêm đường y=k*x+b.
     void add(ll k, ll b)
     {
         root = add(root, lo, hi, {k, b});
     }
 
+    // min tại x (ngoài [lo,hi] sai câm); rỗng -> LLONG_MAX.
     ll query(ll x)
     {
         ll res = LLONG_MAX, l = lo, r = hi;

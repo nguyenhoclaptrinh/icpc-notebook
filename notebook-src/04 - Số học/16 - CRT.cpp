@@ -1,17 +1,15 @@
-// CRT (Chinese Remainder) — ghép hệ đồng dư: x ≡ r[i] (mod m[i])
-// Dấu hiệu nhận biết: "tìm x nhỏ nhất đồng thời chia dư ...".
-// KHÔNG yêu cầu các m nguyên tố cùng nhau (tự xử lý trường hợp chung ước).
-// Cách gọi: crt(r, m) -> {X, M} nghĩa là nghiệm có dạng X + k*M;
-//   vô nghiệm -> {0, -1} (kiểm tra M == -1).
+// CRT — ghép hệ đồng dư x ≡ r[i] (mod m[i]), không cần m nguyên tố cùng nhau
+// Dấu hiệu: "tìm x nhỏ nhất đồng thời chia dư ...".
+//   VD: x≡2 (mod 3), x≡3 (mod 5) -> {8, 15}.
 // Độ phức tạp: O(n log Amax).
-// Lưu ý: lcm trung gian phải vừa trong 64-bit; tích M*t dùng __int128.
-//   m[i] phải > 0; tự chuẩn hóa r[i] về [0, m[i]) trước khi gọi nếu cần.
+// Lưu ý: m[i] > 0; chuẩn hóa r[i] trước khi gọi; lcm vừa trong 64-bit.
+// Nghiệm X+k*M; vô nghiệm -> {0,-1}; cần ext_gcd (file 01).
 pair<ll, ll> crt(const vector<ll> &r, const vector<ll> &m) {
     __int128 x = r[0], M = m[0];
     for (int i = 1; i < (int)r.size(); i++) {
         ll p, q;
         ext_gcd((ll)M, m[i], p, q); // M vừa trong ll theo giả thiết
-        ll g = p * (ll)M + q * m[i]; // p*M + q*m[i] = gcd(M, m[i])
+        ll g = std::gcd((ll)M, m[i]);
         __int128 diff = (__int128)r[i] - x;
         if (diff % g != 0) return {0, -1}; // vô nghiệm
         __int128 lcm = M / g * m[i];

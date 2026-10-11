@@ -1,13 +1,9 @@
-// Manacher: tìm mọi xâu con đối xứng (palindrome), O(n). s 0-indexed
-// d1[i]: số palindrome độ dài lẻ có tâm i (= bán kính lớn nhất,
-//        palindrome dài nhất có độ dài 2 * d1[i] - 1)
-// d2[i]: số palindrome độ dài chẵn có tâm giữa i - 1 và i
-//        (palindrome dài nhất có độ dài 2 * d2[i])
-// Tổng số xâu con đối xứng = sum(d1) + sum(d2)
-// Cách đọc: palindrome lẻ dài nhất tâm i dài 2*d1[i]-1;
-//   palindrome chẵn dài nhất tâm i (giữa i-1 và i) dài 2*d2[i].
-//   Kiểm tra đoạn [l, r] đối xứng: lẻ thì tâm m=(l+r)/2 cần d1[m] > (r-l)/2;
-//   chẵn thì tâm m=(l+r+1)/2 cần d2[m] >= (r-l+1)/2.
+// MANACHER — mọi palindrome con, O(N), s 0-indexed
+// Dấu hiệu: "đếm palindrome", "palindrome dài nhất", "[l,r] đối xứng?".
+//   VD: "ababa" -> d1={1,2,3,2,1}, dài nhất 5, tổng 9; d2 tâm chẵn.
+//   check [l,r]: lẻ d1[(l+r)/2]>(r-l)/2; chẵn d2[(l+r+1)/2]>=(r-l+1)/2.
+// Độ phức tạp: O(N). Tổng sum(d1)+sum(d2) dùng long long.
+// Điền d1 (tâm lẻ, dài nhất 2*d1[i]-1), d2 (tâm giữa i-1,i, dài 2*d2[i]).
 void manacher(string &s, vector<int> &d1, vector<int> &d2)
 {
     int n = s.size();

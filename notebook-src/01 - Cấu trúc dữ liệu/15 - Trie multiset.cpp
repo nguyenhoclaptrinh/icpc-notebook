@@ -1,10 +1,11 @@
-// multiset dùng trie nhị phân, giá trị x phải nằm trong [0, 2^19)
-// t.insertNum(x): thêm x vào multiset
-// t.removeNum(x): bỏ x khỏi multiset
-// t.rank(k):      tìm số đứng thứ k
-// t.sumLE(x):     tổng các số <= x
-// t.sumRankLE(k): tổng k số nhỏ nhất
-// t.countLE(x):   đếm số lượng số <= x
+// Trie nhị phân multiset — order statistics trên số nguyên [0, 2^(BITS+1))
+// Dấu hiệu: "số thứ k", "đếm/tổng các số <= x", "tổng k số nhỏ nhất".
+// Cách gọi: t.insertNum(x); t.removeNum(x) (x vắng -> bỏ qua);
+//   t.rank(k) với k 1-based (VD {1,1,5}: rank(2) == 1);
+//   t.countLE(x); t.sumLE(x); t.sumRankLE(k) = tổng k số nhỏ nhất.
+// Độ phức tạp: O(BITS) ~ O(log Amax) mỗi op.
+// Lưu ý: BITS = 18 chỉ tới 2^19-1 (cần 1e9 thì đổi BITS = 30);
+//   x phải >= 0; rank/sumRankLE yêu cầu 1 <= k <= size.
 struct TrieMultiset
 {
     static const int BITS = 18;
@@ -13,6 +14,7 @@ struct TrieMultiset
 
     TrieMultiset() { t.assign(1, Node()); } // node 0 = root
 
+    // thêm x.
     void insertNum(int x)
     {
         int v = 0;
@@ -31,6 +33,7 @@ struct TrieMultiset
         t[v].sum += x;
     }
 
+    // xóa 1 bản sao x (vắng -> bỏ qua).
     void removeNum(int x)
     {
         int v = 0;
@@ -47,8 +50,10 @@ struct TrieMultiset
         t[v].sum -= x;
     }
 
-    int rank(int k)
+    // số thứ k (k 1-based).
+    int rank(int k) // k 1-based, cần 1 <= k <= size
     {
+        if (k < 1 || k > t[0].cnt) return -1;
         int v = 0, x = 0;
         for (int i = BITS; i >= 0; --i) {
             int C0 = (t[v].next[0]) ? t[t[v].next[0]].cnt : 0;
@@ -63,6 +68,7 @@ struct TrieMultiset
         return x;
     }
 
+    // tổng các số <= x.
     ll sumLE(int x)
     {
         int v = 0;
@@ -79,8 +85,10 @@ struct TrieMultiset
         return res;
     }
 
-    ll sumRankLE(int k)
+    // tổng k số nhỏ nhất.
+    ll sumRankLE(int k) // cần 1 <= k <= size
     {
+        if (k < 1 || k > t[0].cnt) return 0;
         int v = 0;
         ll res = 0;
         for (int i = BITS; i >= 0; --i) {
@@ -98,6 +106,7 @@ struct TrieMultiset
         return res;
     }
 
+    // đếm số <= x.
     int countLE(int x)
     {
         int v = 0;

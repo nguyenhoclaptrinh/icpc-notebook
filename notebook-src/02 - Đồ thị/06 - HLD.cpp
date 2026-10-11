@@ -1,17 +1,9 @@
-// Heavy-Light Decomposition: max trọng số đỉnh trên đường đi, có update
-// Muốn min / tổng / gcd: sửa hàm comb và NEG (min: INT_MAX, tổng, gcd: 0)
-// (phép toán phải giao hoán)
-// t.build(n, adj, w):  adj[1..n]: danh sách kề, w[1..n]: trọng số đỉnh,
-//                      gốc là đỉnh 1. O(n)
-// t.update(u, val):    w[u] = val, O(log n)
-// t.queryPath(u, v):   max w trên các đỉnh của đường đi u - v
-//                      (gồm cả u, v và LCA), O(log^2 n)
-// t.querySub(u):       max w trên các đỉnh của cây con u (gồm cả u),
-//                      O(log n)
-// t.findLCA(u, v):     LCA của u và v, O(log n)
+// HLD: update điểm + hỏi max trên đường đi / cây con (đỉnh 1-based, gốc 1)
+// Dấu hiệu: cây N,Q tới 2e5, "update w[u]" + "hỏi max trên u-v / subtree".
+//   VD: queryPath(2, 3) với w = {_,10,20,30} -> 30.
+// Bẫy: dfs đệ quy — cây lệch N=2e5 có thể tràn stack; sum cần đổi sang long long.
+// t.build(n, adj, w); t.update(u, val); t.queryPath(u, v); t.querySub(u).
 // par, h, sz: cha, độ cao (h[root] = 1), kích thước cây con
-// heavy[i]: con có cây con lớn nhất (0 nếu là lá)
-// head[i]: đỉnh trên cùng của chuỗi chứa i
 // pos[i]: vị trí của i trên segment tree (0-indexed), cây con i là
 //         đoạn [pos[i], pos[i] + sz[i] - 1]
 // Khi cần truy vấn cạnh, đặt w[v] = trọng số (par[v], v) và:
@@ -32,6 +24,7 @@ struct HLD
         return max(a, b);
     }
 
+    // dựng O(n); adj,w 1-based [1..n]; gốc cứng đỉnh 1.
     void build(int _n, vector<vector<int>> &_adj, vector<int> &_w)
     {
         n = _n;
@@ -80,6 +73,7 @@ struct HLD
                 dfs2(v, v);
     }
 
+    // w[u] = val, O(log n).
     void update(int u, int val)
     {
         w[u] = val;
@@ -99,6 +93,7 @@ struct HLD
         return res;
     }
 
+    // max trên u-v gồm LCA, O(log^2 n).
     int queryPath(int u, int v)
     {
         int res = NEG;
@@ -113,6 +108,7 @@ struct HLD
         return comb(res, get(pos[u], pos[v]));
     }
 
+    // LCA của u,v, O(log n).
     int findLCA(int u, int v)
     {
         while (head[u] != head[v]) {
@@ -123,6 +119,7 @@ struct HLD
         return h[u] < h[v] ? u : v;
     }
 
+    // max cây con u, O(log n).
     int querySub(int u)
     {
         return get(pos[u], pos[u] + sz[u] - 1);
