@@ -3,8 +3,10 @@
 //   VD: x≡2 (mod 3), x≡3 (mod 5) -> {8, 15}.
 // Độ phức tạp: O(n log Amax).
 // Lưu ý: m[i] > 0; chuẩn hóa r[i] trước khi gọi; lcm vừa trong 64-bit.
-// Nghiệm X+k*M; vô nghiệm -> {0,-1}; cần ext_gcd (file 01).
+// Nghiệm X+k*M; vô nghiệm -> {0,-1}; rỗng -> {0,1}; cần ext_gcd (file 01).
 pair<ll, ll> crt(const vector<ll> &r, const vector<ll> &m) {
+    if (r.empty()) return {0, 1}; // hệ rỗng: mọi x đều nghiệm
+    if (r.size() != m.size()) return {0, -1};
     __int128 x = r[0], M = m[0];
     for (int i = 1; i < (int)r.size(); i++) {
         ll p, q;

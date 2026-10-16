@@ -50,8 +50,8 @@ struct TrieMultiset
         t[v].sum -= x;
     }
 
-    // số thứ k (k 1-based).
-    int rank(int k) // k 1-based, cần 1 <= k <= size
+    // số thứ k (k 1-based, cần 1 <= k <= size).
+    int rank(int k)
     {
         if (k < 1 || k > t[0].cnt) return -1;
         int v = 0, x = 0;
@@ -85,8 +85,8 @@ struct TrieMultiset
         return res;
     }
 
-    // tổng k số nhỏ nhất.
-    ll sumRankLE(int k) // cần 1 <= k <= size
+    // tổng k số nhỏ nhất (k 1-based, cần 1 <= k <= size).
+    ll sumRankLE(int k)
     {
         if (k < 1 || k > t[0].cnt) return 0;
         int v = 0;

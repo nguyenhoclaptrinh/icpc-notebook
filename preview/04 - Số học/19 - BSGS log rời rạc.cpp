@@ -1,7 +1,8 @@
 // BSGS — log rời rạc: x nhỏ nhất với a^x = b mod m, O(sqrt m)
 // Dấu hiệu: "tìm x sao cho a^x = b (mod m)".
 //   VD: bsgs(2,3,5)=3 (8%5=3); vô nghiệm -> -1.
-// Bẫy: m=1 -> 0; nhân dùng __int128; bảng băm reserve trước.
+// Bẫy: m=1 -> 0; nhân dùng __int128; bảng băm reserve trước; m tới ~1e12
+//   (bảng sqrt(m) entries, lớn hơn thì hết RAM/giờ).
 long long bsgs_modpow(long long a, long long e, long long m) {
     long long r = 1 % m;
     a %= m;

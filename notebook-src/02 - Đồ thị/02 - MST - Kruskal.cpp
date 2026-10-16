@@ -38,10 +38,6 @@ void Solve()
         res.push_back(edge[i].first.second);
         if (res.size() == n - 1) break;  // đã đủ n-1 cạnh
     }
-    // Kiểm tra đồ thị liên thông
-    if (res.size() != n - 1) {
-        cout << "Đồ thị không liên thông!\n";
-        return;
-    }
+    // res.size() < n-1 nghĩa là đồ thị không liên thông (tự check ngoài).
     for (int &x : res) cout << x << ' ';
 }

@@ -1,7 +1,8 @@
 // 2-SAT — gán boolean thỏa mọi mệnh đề OR 2 literal, O(n + m)
 // Dấu hiệu: biến đúng/sai + ràng buộc đôi ("nếu-thì"); Katu Puzzle.
 //   VD: (x0∨x1),(¬x0∨x1),(x0∨¬x1) -> YES 1 1.
-// Bẫy: đỉnh 0-index [0,2n); phủ định v^1; chiều gán đã chốt bằng VD trên.
+// Bẫy: đỉnh 0-index [0,2n); phủ định v^1; chiều gán đã chốt bằng VD trên;
+//   dfs đệ quy: đồ thị sâu quá tràn stack.
 struct TwoSat {
     int n;
     vector<vector<int>> g, rg;

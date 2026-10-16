@@ -4,7 +4,8 @@
 //   VD: S = "ababa", get(0,2) == get(2,4) ("aba").
 // Độ phức tạp: build O(N), query O(1).
 // Lưu ý: 2 mod 1e9+7/1e9+9 chống va chạm; base 31, nhân vừa trong ll;
-//   mọi ký tự ASCII đều được (không chỉ 'a'..'z').
+//   mọi ký tự ASCII đều được (không chỉ 'a'..'z');
+//   get(l,r) yêu cầu 0 <= l <= r < n.
 struct StrHash {
     static const int M1 = 1000000007, M2 = 1000000009, B = 31;
     vector<int> p1, p2, h1, h2;
