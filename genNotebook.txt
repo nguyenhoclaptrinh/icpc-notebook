@@ -1,0 +1,1 @@
+./bin/notebookgen notebook-src -a "HCMUS-FiveHourSession" -i "HCMUS-FiveHourSession - University of Science - VNUHCM"
